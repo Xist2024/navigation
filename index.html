@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xist2024的导航页</title>
+    <!-- 关键：链接到您现有的样式文件，以确保视觉风格完全一致 -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="github.png" type="image/x-icon">
+    
+    <!-- 为导航页添加专属的网格布局样式 -->
+    <style>
+        /* 导航链接网格布局 */
+        .nav-grid {
+            display: grid;
+            /* 响应式布局：每行尽可能多地容纳200px宽的链接，并自动拉伸填满空间 */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px; /* 链接之间的间距 */
+            width: 100%;
+        }
+
+        /* 导航卡片可以更宽一些，以容纳更多内容 */
+        .navigation-card {
+            max-width: 800px; /* 您可以根据需要调整最大宽度 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 沿用您主页的顶部标题栏，文字稍作修改 -->
+    <div class="card-base site-header">Xist2024的导航页</div>
+
+    <!-- 这是导航页的核心内容卡片 -->
+    <div class="card-base widgets-card navigation-card">
+        
+        <!-- 卡片标题 -->
+        <h2>网站导航</h2>
+
+        <!-- 导航链接将在这里显示 -->
+        <div class="nav-grid">
+            
+            <!-- 
+                【如何使用】
+                您只需要复制下面的 <a> 标签，并修改：
+                1. href="xxx"  -  xxx是您要跳转到的网址
+                2. >xxx</a>    -  xxx是按钮上显示的文字
+            -->
+
+            <!-- 示例链接：您可以根据自己的需要修改或增删 -->
+            <a class="widget-item" href="index.html" target="_blank">返回主页</a>
+            <a class="widget-item" href="https://github.com/Xist2024" target="_blank">我的GitHub</a>
+            <a class="widget-item" href="https://www.bilibili.com" target="_blank">哔哩哔哩</a>
+            <a class="widget-item" href="https://www.bing.com" target="_blank">必应搜索</a>
+            <a class="widget-item" href="https://developer.mozilla.org/" target="_blank">MDN文档</a>
+            <a class="widget-item" href="https://www.iconfont.cn/" target="_blank">阿里图标库</a>
+            <a class="widget-item" href="https://cli.im/" target="_blank">草料二维码</a>
+            <a class="widget-item" href="https://www.aliyundrive.com/" target="_blank">阿里云盘</a>
+            
+        </div>
+    </div>
+
+</body>
+</html>
