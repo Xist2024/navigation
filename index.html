@@ -4,33 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xist2024的导航页</title>
-    <!-- 链接到您现有的样式文件，确保视觉风格完全一致 -->
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="github.png" type="image/x-icon">
     
+    <!-- 替换为下面的新样式 -->
     <style>
+        /*
+         *  导航页专属优化样式
+         */
+
+        /* 1. 强制所有卡片等宽 */
+        .card-base {
+            max-width: 800px; /* 您可以根据喜好调整这个统一的最大宽度 */
+        }
+
+        /* 2. 增大时钟字体 */
+        #nav-current-time {
+            /* 您可以调整这个值来改变大小，例如 4em, 4.5em */
+            font-size: 3.5em; 
+        }
+
+        /* 3. 网格布局 (保持不变) */
         .nav-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             width: 100%;
         }
-        .navigation-card {
-            max-width: 800px;
-        }
     </style>
 </head>
 <body>
 
-    <!-- 为弹窗和通知框预留的容器 -->
+    <!-- 页面其余部分保持不变 -->
     <div id="toast-notification"></div>
     <div id="popup-container"></div>
 
     <div class="card-base site-header">Xist2024的导航页</div>
 
-    <!-- 【新增】时钟与运行时间卡片 (直接从主页复制结构) -->
     <div class="card-base clock-container">
-        <!-- 为了避免与主页的元素ID冲突，我们使用新的ID -->
         <div id="nav-current-time">00:00:00</div>
         <div id="nav-current-date">正在获取日期...</div>
         <div class="uptime-display">
@@ -38,18 +49,18 @@
         </div>
     </div>
 
-    <div class="card-base widgets-card navigation-card">
+    <div class="card-base widgets-card">
         <h2>网站导航</h2>
         <div class="nav-grid">
             <a class="widget-item" href="https://qi1.me">返回主页</a>
             <a class="widget-item" onclick="setupSearchEngine()">必应搜索</a>
             <a class="widget-item" href="https://qi1.me/Calculator" target="_blank">多功能计算器</a>
+            <a class="widget-item" onclick="copyToClipboard('3310088475', 'QQ号')">复制QQ联系方式</a>
             <a class="widget-item" href="https://github.com/Xist2024" target="_blank">我的GitHub</a>
+            <a class="widget-item" href="https://www.bilibili.com" target="_blank">哔哩哔哩</a>
         </div>
     </div>
 
-    <!-- 链接到新的JS文件来处理交互逻辑 -->
     <script src="navigation.js"></script>
 </body>
 </html>
-
