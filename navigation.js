@@ -1,15 +1,57 @@
 /**
  * Xist2024 导航页专属脚本
+ * 版本: v1.1
  * 功能:
- * 1. 弹窗式搜索引擎
- * 2. 一键复制联系方式
- * 3. 可复用的顶部通知框 (Toast)
- *
- * 此脚本中的函数均提取自您的主页脚本 (script.js)
- * 以确保逻辑和体验完全一致。
+ * 1. 动态时钟与网站运行时间
+ * 2. 弹窗式搜索引擎
+ * 3. 一键复制联系方式
+ * 4. 可复用的顶部通知框 (Toast)
  */
 
-// --- 通用工具函数 (从 script.js 提取) ---
+// --- 新增：v1.1 时钟与运行时间逻辑 ---
+
+// 设置与主页完全一致的网站建立精确时间
+const websiteStartTime = new Date(2025, 6, 9, 1, 22, 0); // 月份6代表7月
+
+function updateNavClockAndUptime() {
+    const now = new Date();
+    
+    // 更新时间
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const timeEl = document.getElementById('nav-current-time');
+    if (timeEl) timeEl.textContent = `${hours}:${minutes}:${seconds}`;
+
+    // 更新日期
+    const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    const dateEl = document.getElementById('nav-current-date');
+    if (dateEl) dateEl.textContent = now.toLocaleDateString('zh-CN', options);
+
+    // 更新网站运行时间
+    const diff = now.getTime() - websiteStartTime.getTime();
+    const uptimeEl = document.getElementById('nav-uptime');
+    if (uptimeEl) {
+        if (diff < 0) {
+            uptimeEl.textContent = "网站尚未开始运行...";
+            return;
+        }
+
+        const totalSeconds = Math.floor(diff / 1000);
+        const years = Math.floor(totalSeconds / (365.25 * 24 * 60 * 60));
+        const days = Math.floor((totalSeconds % (365.25 * 24 * 60 * 60)) / (24 * 60 * 60));
+        const hoursUptime = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
+        const minutesUptime = Math.floor((totalSeconds % (60 * 60)) / 60);
+        const secondsUptime = totalSeconds % 60;
+
+        let uptimeString = '';
+        if (years > 0) uptimeString += `${years} 年 `;
+        uptimeString += `${days} 天 ${hoursUptime} 小时 ${minutesUptime} 分 ${secondsUptime} 秒`;
+        uptimeEl.textContent = uptimeString;
+    }
+}
+
+// --- 通用工具函数 (Toast, 复制) ---
 
 let toastTimeout;
 function showToast(message, duration = 2000) {
@@ -26,7 +68,6 @@ function showToast(message, duration = 2000) {
 }
 
 async function copyToClipboard(content, itemType) {
-    // 优先使用安全、现代的剪贴板API
     if (navigator.clipboard && window.isSecureContext) {
         try {
             await navigator.clipboard.writeText(content);
@@ -36,7 +77,6 @@ async function copyToClipboard(content, itemType) {
             showToast(`复制失败，浏览器可能不支持。`, 3000);
         }
     } else {
-        // 如果不支持，则使用传统的备用方法
         const textArea = document.createElement("textarea");
         textArea.value = content;
         textArea.style.position = "fixed";
@@ -55,7 +95,7 @@ async function copyToClipboard(content, itemType) {
     }
 }
 
-// --- 弹窗小工具框架 (从 script.js 提取) ---
+// --- 弹窗小工具框架 ---
 
 const popupContainer = document.getElementById('popup-container');
 let currentKeyListener = null;
@@ -65,7 +105,7 @@ function createPopup(title, contentHtml, specificClass = '') {
         document.removeEventListener('keydown', currentKeyListener);
         currentKeyListener = null;
     }
-    popupContainer.innerHTML = ''; // 清空之前的弹窗
+    popupContainer.innerHTML = '';
     const popupCard = document.createElement('div');
     popupCard.className = 'popup-card ' + specificClass;
     popupCard.innerHTML = `
@@ -83,11 +123,10 @@ function closePopup() {
         document.removeEventListener('keydown', currentKeyListener);
         currentKeyListener = null;
     }
-    // 等待动画结束后再清空内容
     setTimeout(() => { popupContainer.innerHTML = ''; }, 300);
 }
 
-// --- 必应搜索弹窗逻辑 (从 script.js 提取) ---
+// --- 必应搜索弹窗逻辑 ---
 
 function setupSearchEngine() {
     const searchHtml = `
@@ -111,14 +150,21 @@ function setupSearchEngine() {
     
     searchButton.addEventListener('click', performSearch);
     
-    // 支持回车搜索和ESC关闭
     currentKeyListener = (e) => {
         if (e.key === 'Enter') performSearch();
         if (e.key === 'Escape') closePopup();
     };
     document.addEventListener('keydown', currentKeyListener);
     
-    // 自动聚焦到输入框
     searchInput.focus();
-}```
+}
 
+// --- 新增：v1.1 页面全局心跳 ---
+
+// 每1秒更新一次时钟和运行时间
+setInterval(updateNavClockAndUptime, 1000);
+
+// 页面加载时立即更新一次，避免初始空白
+document.addEventListener('DOMContentLoaded', () => {
+    updateNavClockAndUptime();
+});
