@@ -13,6 +13,7 @@ body {
     /* --- 修改后的背景 --- */
     background-color: #007bff; /* 备用背景色 */
     background-image: linear-gradient(to bottom right, #007bff, #20c997);
+    cursor: none;
 
     padding: 20px; /* 整体内边距 */
     box-sizing: border-box; /* 边框盒模型 */
@@ -784,4 +785,18 @@ body {
     font-weight: bold;
     text-shadow: 0 0 5px rgba(0,0,0,0.5);
 
+}
+/* --- 丝滑鼠标跟随动效样式 --- */
+.trail-dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #ffcc00;
+    pointer-events: none; /* 关键：让点不捕获鼠标事件 */
+    transform: translate(-50%, -50%); /* 让点的中心对准光标 */
+    z-index: 9999; /* 确保在最顶层 */
+    transition: background-color 0.5s ease;
 }
